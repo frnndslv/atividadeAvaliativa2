@@ -26,12 +26,9 @@
     verificar_erro_stmt($stmt);
     mysqli_stmt_bind_param($stmt, "sdi",  $nomeProduto, $preco, $quantidade );
 
+    verificar_savamento(mysqli_stmt_execute($stmt));
 
-    if (mysqli_stmt_execute($stmt)) {
-        echo "Dados inseridos com sucesso!";
-    } else {
-        echo "Erro ao inserir: " . mysqli_stmt_error($stmt);
-    }
+    echo "Dados inseridos com sucesso!";
 
     mysqli_stmt_close($stmt);
   

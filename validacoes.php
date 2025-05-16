@@ -17,15 +17,16 @@ function verificar_erro_stmt($stmt) {
     }
 }
 
-function verificar_bind_stmt($bind) {
-    if (!$bind) { 
-        exit('<h3 class="alert alert-danger">Erro ao vincular parâmetros. Impossível salvar./h3>');
-    }
-}
 
 function verificar_erro_execucao($exe, $stmt, $msg) {
     if (!$exe) {
         exit('<h3 class="alert alert-danger">'. $msg .': ' . mysqli_stmt_error($stmt) . "</h3>");
+    }
+}
+
+function verificar_savamento($bind) {
+    if (!$bind) {
+        exit('<h3 class="alert alert-danger">Erro ao vincular parâmetros. Impossível salvar./h3>');
     }
 }
 
