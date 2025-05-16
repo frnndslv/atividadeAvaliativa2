@@ -8,36 +8,36 @@
 <body>
 
 <?php
+    require 'validacoes.php';
+
+    form_nao_enviado('Forms não foi enviado');
+    ha_campos_em_branco('Existe campos em branco');
+
     require 'conexao.php';
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if ((!empty($_POST['nomeProduto'])) && (!empty($_POST['preco'])) && (!empty($_POST['quantidade']))) {
-            $nomeProduto = $_POST['nomeProduto'];
-            $quantidade = $_POST['quantidade'];
-            $preco = str_replace(',', '.', $_POST['preco']);
-            $preco = floatval($preco);
+ 
+    $nomeProduto = $_POST['nomeProduto'];
+    $quantidade = $_POST['quantidade'];
+    $preco = str_replace(',', '.', $_POST['preco']);
+    $preco = floatval($preco);
 
-            $sql = "INSERT INTO produtos (nome, preco, quantidade) VALUES (?, ?, ?)";
-            $stmt = mysqli_prepare($conn, $sql);
+    $sql = "INSERT INTO produtos (nome, preco, quantidade) VALUES (?, ?, ?)";
+    $stmt = mysqli_prepare($conn, $sql);
 
-            if ($stmt) {
-                mysqli_stmt_bind_param($stmt, "sdi",  $nomeProduto, $preco, $quantidade );
+    verificar_erro_stmt($stmt);
+    mysqli_stmt_bind_param($stmt, "sdi",  $nomeProduto, $preco, $quantidade );
 
-                if (mysqli_stmt_execute($stmt)) {
-                    echo "Dados inseridos com sucesso!";
-                } else {
-                    echo "Erro ao inserir: " . mysqli_stmt_error($stmt);
-                }
 
-                mysqli_stmt_close($stmt);
-            } else {
-                echo "Erro ao preparar a query: " . mysqli_error($conn);
-            }
-
-            mysqli_close($conn);
-            header("Location: listar.php");
-            exit;
-        }
+    if (mysqli_stmt_execute($stmt)) {
+        echo "Dados inseridos com sucesso!";
+    } else {
+        echo "Erro ao inserir: " . mysqli_stmt_error($stmt);
     }
+
+    mysqli_stmt_close($stmt);
+  
+
+    mysqli_close($conn);
+    header("Location: listar.php");
 
 ?>
     
